@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "traceagent"
+name = "tkm-traceagent"
 version = "0.1.0"
 description = "Lightweight observability SDK — traces, spans, decorators, MCP server, and dashboard"
 license = { text = "MIT" }

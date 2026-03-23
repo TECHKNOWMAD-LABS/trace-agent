@@ -9,6 +9,20 @@ description = "Lightweight observability SDK — traces, spans, decorators, MCP 
 license = { text = "MIT" }
 readme = "README.md"
 requires-python = ">=3.9"
+authors = [
+    { name = "TechKnowMad Labs", email = "admin@techknowmad.ai" },
+]
+keywords = ["observability", "tracing", "opentelemetry", "spans", "mcp", "agents"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: System :: Monitoring",
+]
 dependencies = [
     "anyio>=4.0",
     "rich>=13.0",
@@ -19,7 +33,10 @@ dependencies = [
 dev = [
     "pytest>=8.0",
     "pytest-asyncio>=0.23",
+    "pytest-cov>=5.0",
+    "hypothesis>=6.0",
     "ruff>=0.4",
+    "mypy>=1.0",
 ]
 
 [tool.pytest.ini_options]
@@ -32,6 +49,11 @@ target-version = "py39"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP"]
+
+[tool.mypy]
+python_version = "3.9"
+strict = true
+ignore_missing_imports = true
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/traceagent"]

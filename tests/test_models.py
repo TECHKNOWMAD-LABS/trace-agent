@@ -69,3 +69,9 @@ def test_trace_to_dict():
     d = trace.to_dict()
     assert d["trace_id"] == "xyz"
     assert d["span_count"] == 1
+
+
+def test_trace_total_duration_ms_no_root():
+    """total_duration_ms returns None when trace has no root span (line 78)."""
+    trace = Trace(trace_id="empty")
+    assert trace.total_duration_ms is None

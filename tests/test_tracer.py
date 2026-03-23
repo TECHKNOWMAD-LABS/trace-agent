@@ -3,7 +3,7 @@ import pytest
 
 from traceagent.models import SpanStatus
 from traceagent.storage import InMemoryStorage
-from traceagent.tracer import Tracer
+from traceagent.tracer import Tracer, get_tracer, set_global_tracer
 
 
 def fresh_tracer() -> Tracer:
@@ -50,3 +50,18 @@ def test_get_active_span():
     with tracer.start_span("active") as span:
         assert tracer.get_active_span() is span
     assert tracer.get_active_span() is None
+
+
+def test_get_tracer_creates_global_when_none():
+    """get_tracer() creates a new global tracer when none exists (line 62)."""
+    set_global_tracer(None)  # type: ignore[arg-type]
+    t = get_tracer("fresh")
+    assert t is not None
+    assert isinstance(t, Tracer)
+
+
+def test_get_tracer_returns_existing_global():
+    """get_tracer() returns cached global tracer on subsequent calls."""
+    t1 = get_tracer()
+    t2 = get_tracer()
+    assert t1 is t2

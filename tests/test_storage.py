@@ -67,3 +67,24 @@ def test_file_storage_clear():
         store.save_span(make_span())
         store.clear()
         assert len(list(Path(tmpdir).glob("*.json"))) == 0
+
+
+def test_file_storage_get_trace_missing():
+    """get_trace returns None when file does not exist (line 101)."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        store = FileStorage(tmpdir)
+        assert store.get_trace("no-such-trace") is None
+
+
+def test_file_storage_append_span_to_existing_trace():
+    """Second save_span appends to existing JSON file (line 92 branch)."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        store = FileStorage(tmpdir)
+        s1 = make_span("first")
+        s2 = Span(name="second", trace_id=s1.trace_id)
+        s2.end()
+        store.save_span(s1)
+        store.save_span(s2)  # file exists — triggers line 92
+        trace = store.get_trace(s1.trace_id)
+        assert trace is not None
+        assert len(trace.spans) == 2

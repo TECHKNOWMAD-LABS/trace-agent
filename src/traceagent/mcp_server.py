@@ -23,7 +23,8 @@ def _coerce_limit(value: Any, default: int = _DEFAULT_LIST_LIMIT) -> int:
         return default
     try:
         limit = int(value)
-    except (ValueError, TypeError):
+    except (ValueError, TypeError, OverflowError):
+        # OverflowError covers float('inf') and float('nan') passed as value
         logger.warning("Invalid limit %r; using default %d", value, default)
         return default
     if limit < 0:

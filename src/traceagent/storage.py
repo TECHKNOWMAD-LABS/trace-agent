@@ -119,6 +119,8 @@ class InMemoryStorage(BaseStorage):
             limit: Maximum number of traces to return (clamped to [0, 10000]).
         """
         limit = _validate_limit(limit)
+        if limit == 0:
+            return []
         with self._lock:
             traces = []
             for tid, spans in list(self._spans.items())[-limit:]:

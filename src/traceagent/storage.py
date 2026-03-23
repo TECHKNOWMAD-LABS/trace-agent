@@ -208,8 +208,26 @@ class FileStorage(BaseStorage):
         self._path.mkdir(parents=True, exist_ok=True)
         self._lock = threading.Lock()
 
+    def _safe_filename(self, trace_id: str) -> str:
+        """Return a filesystem-safe filename component derived from *trace_id*.
+
+        Strips any characters that are not alphanumeric, hyphens, or underscores
+        to prevent path traversal (CWE-22) attacks where a caller could pass
+        trace_id = '../../../etc/passwd' and write to arbitrary paths.
+        """
+        import re
+        safe = re.sub(r"[^a-zA-Z0-9\-_]", "_", trace_id)
+        if not safe:
+            raise ValueError(f"trace_id {trace_id!r} produces an empty safe filename")
+        return safe
+
     def _trace_file(self, trace_id: str) -> Path:
-        return self._path / f"{trace_id}.json"
+        safe_name = self._safe_filename(trace_id)
+        resolved = (self._path / f"{safe_name}.json").resolve()
+        # Ensure the resolved path is still inside our storage directory (CWE-22)
+        if not str(resolved).startswith(str(self._path.resolve())):
+            raise ValueError(f"Path traversal detected for trace_id {trace_id!r}")
+        return resolved
 
     def save_span(self, span: Span) -> None:
         """Persist *span* to disk with retry on transient failure.

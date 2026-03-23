@@ -2,12 +2,12 @@
 from __future__ import annotations
 
 import tempfile
+from collections.abc import Generator
 from pathlib import Path
-from typing import Generator
 
 import pytest
 
-from traceagent.models import Span, SpanStatus, Trace
+from traceagent.models import Span, SpanStatus
 from traceagent.storage import FileStorage, InMemoryStorage
 from traceagent.tracer import Tracer, set_global_tracer
 

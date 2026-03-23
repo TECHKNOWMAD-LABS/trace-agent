@@ -1,9 +1,6 @@
 """Tests for TraceAgent dashboard module — 0% → full coverage."""
 from __future__ import annotations
 
-from io import StringIO
-from unittest.mock import MagicMock, patch
-
 import pytest
 
 from traceagent.dashboard import render_dashboard, render_trace
@@ -16,7 +13,7 @@ def _tracer_with_data() -> Tracer:
     """Return a tracer that has a completed root+child trace."""
     store = InMemoryStorage()
     t = Tracer(storage=store)
-    with t.start_span("http.request", attributes={"method": "GET"}) as root:
+    with t.start_span("http.request", attributes={"method": "GET"}):
         with t.start_span("db.query"):
             pass
     return t
@@ -71,9 +68,6 @@ def test_render_dashboard_uses_get_tracer_by_default():
 def test_render_dashboard_stats_computed():
     """Stats table content is derived from traces — no assertion on Rich internals,
     but we verify the function reaches completion across multiple call paths."""
-    t1 = _tracer_with_data()
-    t2 = _error_tracer()
-
     # Create a tracer that has both ok and error traces
     store = InMemoryStorage()
     combined = Tracer(storage=store)
@@ -91,8 +85,7 @@ def test_render_dashboard_stats_computed():
 def test_render_trace_not_found(capsys):
     """render_trace prints error message when trace_id is unknown."""
     render_trace("nonexistent-trace-id", tracer=_empty_tracer())
-    captured = capsys.readouterr()
-    # Rich outputs to console which may not be captured by capsys; just ensure no crash
+    capsys.readouterr()  # consume output; Rich may write to its own console, not stdout
 
 
 def test_render_trace_found_no_crash():

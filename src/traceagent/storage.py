@@ -166,7 +166,11 @@ def _span_from_dict(data: dict[str, Any]) -> Span:
     return span
 
 
-def _retry(fn: Any, attempts: int = _DEFAULT_RETRY_ATTEMPTS, base_delay: float = _RETRY_BASE_DELAY) -> Any:
+def _retry(
+    fn: Any,
+    attempts: int = _DEFAULT_RETRY_ATTEMPTS,
+    base_delay: float = _RETRY_BASE_DELAY,
+) -> Any:
     """Execute *fn* with exponential back-off retry.
 
     Args:

@@ -1,17 +1,14 @@
 """Performance tests — parallelism benchmarks and cache correctness."""
 from __future__ import annotations
 
-import asyncio
 import time
-from typing import List
 
 import pytest
 
-from traceagent.async_storage import CachedStorage, gather_traces_parallel, gather_stats_parallel
+from traceagent.async_storage import CachedStorage, gather_stats_parallel, gather_traces_parallel
 from traceagent.models import Span
 from traceagent.storage import InMemoryStorage
 from traceagent.tracer import Tracer
-
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 

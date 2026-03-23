@@ -160,7 +160,8 @@ class MCPServer:
         args = arguments or {}
         try:
             if name == "list_traces":
-                result = _handle_list_traces(self._tracer, limit=args.get("limit", _DEFAULT_LIST_LIMIT))
+                limit = args.get("limit", _DEFAULT_LIST_LIMIT)
+                result = _handle_list_traces(self._tracer, limit=limit)
             elif name == "get_trace":
                 result = _handle_get_trace(self._tracer, trace_id=args.get("trace_id", ""))
             elif name == "get_stats":

@@ -3,12 +3,10 @@ from __future__ import annotations
 
 import asyncio
 import logging
-import time
-from functools import lru_cache
 from typing import Any
 
 from .models import Span, SpanStatus, Trace
-from .storage import BaseStorage, InMemoryStorage
+from .storage import BaseStorage
 
 logger = logging.getLogger(__name__)
 

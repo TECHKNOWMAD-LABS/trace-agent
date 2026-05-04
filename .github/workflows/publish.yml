@@ -9,6 +9,11 @@ on:
 env:
   PYTHON_VERSION: '3.11'
 
+# Restrict GITHUB_TOKEN to read-only at workflow level. Jobs that need
+# write access (publish, deploy) declare their own `permissions:` block.
+permissions:
+  contents: read
+
 jobs:
   test:
     name: Test

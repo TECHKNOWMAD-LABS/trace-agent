@@ -1,4 +1,5 @@
 """MCP server exposing TraceAgent observability data."""
+
 from __future__ import annotations
 
 import json
@@ -87,12 +88,7 @@ def _handle_get_stats(tracer: Tracer) -> dict[str, Any]:
         Dictionary with ``trace_count``, ``error_count``, and ``avg_duration_ms``.
     """
     traces = tracer.get_storage().list_traces(limit=_MAX_LIST_LIMIT)
-    error_count = sum(
-        1
-        for t in traces
-        for s in t.spans
-        if s.status.value == "error"
-    )
+    error_count = sum(1 for t in traces for s in t.spans if s.status.value == "error")
     durations = [t.total_duration_ms for t in traces if t.total_duration_ms is not None]
     avg_ms = sum(durations) / len(durations) if durations else 0.0
     return {

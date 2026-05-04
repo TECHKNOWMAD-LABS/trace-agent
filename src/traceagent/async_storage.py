@@ -1,4 +1,5 @@
 """Async parallel storage utilities for TraceAgent."""
+
 from __future__ import annotations
 
 import asyncio
@@ -67,9 +68,7 @@ async def gather_stats_parallel(
         async with sem:
             loop = asyncio.get_event_loop()
             traces = await loop.run_in_executor(None, lambda: store.list_traces(limit=1000))
-            error_count = sum(
-                1 for t in traces for s in t.spans if s.status == SpanStatus.ERROR
-            )
+            error_count = sum(1 for t in traces for s in t.spans if s.status == SpanStatus.ERROR)
             durations = [t.total_duration_ms for t in traces if t.total_duration_ms is not None]
             avg_ms = sum(durations) / len(durations) if durations else 0.0
             return {
@@ -82,6 +81,7 @@ async def gather_stats_parallel(
 
 
 # ── Simple LRU cache for repeated trace lookups ────────────────────────────
+
 
 class CachedStorage:
     """Wraps a BaseStorage with an LRU cache on get_trace.

@@ -7,6 +7,7 @@ display functions.
 Run:
     python examples/file_storage_dashboard.py
 """
+
 from __future__ import annotations
 
 import sys
@@ -16,8 +17,8 @@ import time
 sys.path.insert(0, "src")  # allow running from repo root without installing
 
 from traceagent import FileStorage, Tracer
-from traceagent.dashboard import render_dashboard, render_trace
 from traceagent.async_storage import CachedStorage
+from traceagent.dashboard import render_dashboard, render_trace
 
 
 def populate_traces(tracer: Tracer, n: int = 8) -> list[str]:

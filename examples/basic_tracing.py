@@ -6,6 +6,7 @@ spans, attaching attributes and events, and retrieving the stored trace.
 Run:
     python examples/basic_tracing.py
 """
+
 from __future__ import annotations
 
 import sys
@@ -13,13 +14,15 @@ import time
 
 sys.path.insert(0, "src")  # allow running from repo root without installing
 
-from traceagent import Tracer, InMemoryStorage
+from traceagent import InMemoryStorage, Tracer
 from traceagent.models import SpanStatus
 
 
 def simulate_http_request(tracer: Tracer, path: str) -> None:
     """Simulate a simple HTTP request with a database sub-call."""
-    with tracer.start_span("http.request", attributes={"http.path": path, "http.method": "GET"}) as root:
+    with tracer.start_span(
+        "http.request", attributes={"http.path": path, "http.method": "GET"}
+    ) as root:
         root.set_attribute("user.id", "u-42")
 
         # Simulate some processing time
@@ -57,8 +60,10 @@ def main() -> None:
     print(f"\nRecorded {len(traces)} traces:\n")
 
     for trace in traces:
-        print(f"  Trace {trace.trace_id[:12]}…  spans={len(trace.spans)}  "
-              f"duration={trace.total_duration_ms:.1f}ms")
+        print(
+            f"  Trace {trace.trace_id[:12]}…  spans={len(trace.spans)}  "
+            f"duration={trace.total_duration_ms:.1f}ms"
+        )
         for span in trace.spans:
             indent = "    " if span.parent_id else "  "
             status_icon = "✓" if span.status == SpanStatus.OK else "✗"

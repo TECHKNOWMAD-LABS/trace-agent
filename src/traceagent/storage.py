@@ -1,4 +1,5 @@
 """Storage backends for TraceAgent."""
+
 from __future__ import annotations
 
 import json
@@ -222,6 +223,7 @@ class FileStorage(BaseStorage):
         trace_id = '../../../etc/passwd' and write to arbitrary paths.
         """
         import re
+
         safe = re.sub(r"[^a-zA-Z0-9\-_]", "_", trace_id)
         if not safe:
             raise ValueError(f"trace_id {trace_id!r} produces an empty safe filename")

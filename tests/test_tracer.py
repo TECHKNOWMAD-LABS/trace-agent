@@ -1,4 +1,5 @@
 """Tests for the core Tracer."""
+
 import pytest
 
 from traceagent.models import SpanStatus

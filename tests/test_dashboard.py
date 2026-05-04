@@ -1,4 +1,5 @@
 """Tests for TraceAgent dashboard module — 0% → full coverage."""
+
 from __future__ import annotations
 
 import pytest
@@ -35,6 +36,7 @@ def _empty_tracer() -> Tracer:
 
 # ── render_dashboard ──────────────────────────────────────────────────────────
 
+
 def test_render_dashboard_empty_no_crash():
     """render_dashboard with no traces must not raise."""
     render_dashboard(tracer=_empty_tracer())
@@ -60,6 +62,7 @@ def test_render_dashboard_limit_param():
 def test_render_dashboard_uses_get_tracer_by_default():
     """When tracer=None, render_dashboard calls get_tracer()."""
     from traceagent.tracer import set_global_tracer
+
     t = _tracer_with_data()
     set_global_tracer(t)
     render_dashboard()  # no tracer arg → uses global
@@ -81,6 +84,7 @@ def test_render_dashboard_stats_computed():
 
 
 # ── render_trace ──────────────────────────────────────────────────────────────
+
 
 def test_render_trace_not_found(capsys):
     """render_trace prints error message when trace_id is unknown."""
@@ -118,6 +122,7 @@ def test_render_trace_parent_id_display():
 def test_render_trace_uses_global_tracer_when_none():
     """render_trace with tracer=None falls back to get_tracer()."""
     from traceagent.tracer import set_global_tracer
+
     t = _tracer_with_data()
     set_global_tracer(t)
     traces = t.get_storage().list_traces()

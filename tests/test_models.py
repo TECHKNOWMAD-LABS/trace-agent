@@ -1,4 +1,5 @@
 """Tests for TraceAgent models."""
+
 import time
 
 from traceagent.models import Span, SpanStatus, Trace

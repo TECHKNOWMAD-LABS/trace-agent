@@ -1,16 +1,15 @@
 """Property-based tests using Hypothesis for TraceAgent core invariants."""
+
 from __future__ import annotations
 
 import json
-import re
 
-import pytest
 from hypothesis import HealthCheck, assume, given, settings
 from hypothesis import strategies as st
 
-from traceagent.models import Span, SpanStatus, Trace
 from traceagent.mcp_server import MCPServer, _coerce_limit
-from traceagent.storage import InMemoryStorage, _validate_limit, _validate_trace_id
+from traceagent.models import Span, SpanStatus, Trace
+from traceagent.storage import InMemoryStorage, _validate_limit
 from traceagent.tracer import Tracer
 
 # ── Strategies ────────────────────────────────────────────────────────────────
@@ -42,6 +41,7 @@ valid_trace_ids = st.text(
 ).filter(lambda s: s.strip())
 
 # ── Span invariants ───────────────────────────────────────────────────────────
+
 
 @given(name=valid_names)
 @settings(max_examples=200, suppress_health_check=[HealthCheck.too_slow])
@@ -119,6 +119,7 @@ def test_span_to_dict_serialisation_round_trip(name: str) -> None:
 
 # ── Trace invariants ──────────────────────────────────────────────────────────
 
+
 @given(names=st.lists(valid_names, min_size=1, max_size=10))
 def test_trace_span_count_matches_added(names: list[str]) -> None:
     """Invariant: trace.span_count == len(spans added)."""
@@ -143,6 +144,7 @@ def test_trace_to_dict_round_trip(names: list[str]) -> None:
 
 
 # ── Storage invariants ────────────────────────────────────────────────────────
+
 
 @given(names=st.lists(valid_names, min_size=1, max_size=20))
 @settings(max_examples=100)
@@ -172,6 +174,7 @@ def test_inmemory_list_traces_respects_limit(limit: int) -> None:
 
 # ── _validate_limit invariants ────────────────────────────────────────────────
 
+
 @given(limit=st.integers())
 def test_validate_limit_always_in_range(limit: int) -> None:
     """Invariant: _validate_limit always returns a value in [0, 10_000]."""
@@ -180,6 +183,7 @@ def test_validate_limit_always_in_range(limit: int) -> None:
 
 
 # ── _coerce_limit invariants ──────────────────────────────────────────────────
+
 
 @given(value=st.one_of(st.integers(), st.floats(allow_nan=True), st.text(), st.none()))
 @settings(suppress_health_check=[HealthCheck.too_slow])
@@ -191,6 +195,7 @@ def test_coerce_limit_never_raises(value: object) -> None:
 
 
 # ── MCPServer output invariants ───────────────────────────────────────────────
+
 
 @given(tool_name=st.text(max_size=50))
 @settings(max_examples=200, suppress_health_check=[HealthCheck.too_slow])

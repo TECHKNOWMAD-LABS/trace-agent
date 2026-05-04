@@ -1,4 +1,5 @@
 """Tests for MCPServer."""
+
 import json
 
 from traceagent.mcp_server import MCPServer

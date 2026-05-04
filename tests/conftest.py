@@ -1,4 +1,5 @@
 """Shared fixtures and mock helpers for TraceAgent test suite."""
+
 from __future__ import annotations
 
 import tempfile

@@ -1,4 +1,5 @@
 """Error hardening tests — empty inputs, None, malformed data, huge strings, unicode."""
+
 from __future__ import annotations
 
 import json
@@ -12,6 +13,7 @@ from traceagent.storage import FileStorage, InMemoryStorage, _validate_limit, _v
 from traceagent.tracer import Tracer
 
 # ── Span name validation ─────────────────────────────────────────────────────
+
 
 def test_span_none_name_raises():
     with pytest.raises((ValueError, TypeError)):
@@ -51,6 +53,7 @@ def test_span_name_leading_trailing_whitespace_stripped():
 
 # ── Span.add_event validation ────────────────────────────────────────────────
 
+
 def test_add_event_none_name_raises():
     span = Span(name="op")
     with pytest.raises((ValueError, TypeError)):
@@ -82,6 +85,7 @@ def test_add_event_huge_name_truncated():
 
 
 # ── Span.set_attribute validation ────────────────────────────────────────────
+
 
 def test_set_attribute_none_key_raises():
     span = Span(name="op")
@@ -127,6 +131,7 @@ def test_set_attribute_none_value_ok():
 
 # ── Span.end with edge cases ─────────────────────────────────────────────────
 
+
 def test_span_end_huge_error_truncated():
     span = Span(name="op")
     span.end(error="E" * 100_000)
@@ -142,6 +147,7 @@ def test_span_end_empty_error_does_not_override_ok():
 
 # ── Trace.add_span validation ─────────────────────────────────────────────────
 
+
 def test_trace_add_span_non_span_raises():
     trace = Trace(trace_id="t1")
     with pytest.raises(TypeError):
@@ -155,6 +161,7 @@ def test_trace_add_span_none_raises():
 
 
 # ── Storage validation helpers ───────────────────────────────────────────────
+
 
 def test_validate_trace_id_none_raises():
     with pytest.raises(ValueError):
@@ -192,6 +199,7 @@ def test_validate_limit_huge_clamped():
 
 # ── InMemoryStorage error paths ───────────────────────────────────────────────
 
+
 def test_inmemory_save_non_span_raises():
     store = InMemoryStorage()
     with pytest.raises(TypeError):
@@ -217,6 +225,7 @@ def test_inmemory_list_traces_bad_limit_raises():
 
 
 # ── FileStorage error paths ───────────────────────────────────────────────────
+
 
 def test_file_storage_none_path_raises():
     with pytest.raises(ValueError):
@@ -252,6 +261,7 @@ def test_file_storage_skips_corrupt_json(tmp_path):
 
 
 # ── MCPServer error paths ─────────────────────────────────────────────────────
+
 
 def test_mcp_empty_tool_name():
     server = MCPServer(tracer=Tracer(storage=InMemoryStorage()))
@@ -302,6 +312,7 @@ def test_mcp_call_tool_none_arguments():
 
 
 # ── Coerce limit helper ───────────────────────────────────────────────────────
+
 
 def test_coerce_limit_none_returns_default():
     assert _coerce_limit(None) == 20

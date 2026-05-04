@@ -1,4 +1,5 @@
 """Tests for trace decorators."""
+
 import pytest
 
 from traceagent.decorators import trace, trace_async

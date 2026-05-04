@@ -1,4 +1,5 @@
 """Performance tests — parallelism benchmarks and cache correctness."""
+
 from __future__ import annotations
 
 import time
@@ -12,6 +13,7 @@ from traceagent.tracer import Tracer
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
+
 def _store_with_n_traces(n: int) -> tuple[InMemoryStorage, list[str]]:
     store = InMemoryStorage()
     tracer = Tracer(storage=store)
@@ -24,6 +26,7 @@ def _store_with_n_traces(n: int) -> tuple[InMemoryStorage, list[str]]:
 
 
 # ── gather_traces_parallel ────────────────────────────────────────────────────
+
 
 @pytest.mark.asyncio
 async def test_gather_traces_parallel_returns_all():
@@ -85,6 +88,7 @@ async def test_gather_traces_parallel_speedup():
 
 # ── gather_stats_parallel ─────────────────────────────────────────────────────
 
+
 @pytest.mark.asyncio
 async def test_gather_stats_parallel_multiple_backends():
     stores = []
@@ -112,6 +116,7 @@ async def test_gather_stats_parallel_empty_stores():
 
 
 # ── CachedStorage ─────────────────────────────────────────────────────────────
+
 
 def test_cached_storage_basic_hit():
     store = InMemoryStorage()

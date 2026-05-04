@@ -1,4 +1,5 @@
 """Tests for TraceAgent storage backends."""
+
 import tempfile
 from pathlib import Path
 
